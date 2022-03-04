@@ -24,6 +24,8 @@ inputs:
     type: File
     inputBinding:
       position: 1
+    secondaryFiles:
+      - .bai
     doc: input bam file, must have read groups
 
   - id: samplename

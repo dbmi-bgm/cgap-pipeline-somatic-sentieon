@@ -22,7 +22,7 @@ nt=$(nproc) #number of threads to use in computation, set to number of cores in 
 # 1. Run TNscope
 # ******************************************
 
-sentieon driver --algo TNscope -t $nt -r $reference_fa -i $raw_bam --tumor_sample $sample_name output.vcf || exit 1
+sentieon driver -t $nt -r $reference_fa -i $raw_bam --algo TNscope --tumor_sample $sample_name output.vcf || exit 1
 
 # ******************************************
 # 2. Compress and index output
