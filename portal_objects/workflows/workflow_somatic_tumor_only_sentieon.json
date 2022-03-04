@@ -1,0 +1,132 @@
+{
+  "accession": "GAPWFV99QX4V",
+  "app_name": "workflow_somatic_tumor_only_sention",
+  "app_version": "VERSION",
+  "arguments": [
+      {
+          "argument_format": "bam",
+          "argument_type": "Input file",
+          "workflow_argument_name": "input_bam"
+      },
+      {
+          "argument_format": "fa",
+          "argument_type": "Input file",
+          "workflow_argument_name": "reference_fa"
+      },
+      {
+          "argument_type": "parameter",
+          "workflow_argument_name": "samplename"
+      },
+      {
+          "argument_format": "vcf_gz",
+          "argument_type": "Input file",
+          "workflow_argument_name": "known-sites-snp"
+      },
+      {
+          "argument_format": "vcf_gz",
+          "argument_type": "Output processed file",
+          "workflow_argument_name": "output_vcf_gz",
+          "secondary_file_formats": ["vcf_gz_tbi"]
+      }
+  ],
+  "project": "PROJECT_UUID",
+  "category": ["processing"],
+  "cwl_child_filenames": [],
+  "cwl_directory_url_v1": "s3://CWLBUCKET/PIPELINE/VERSION",
+  "cwl_main_filename": "sentieon_somatic_tumor_only.cwl",
+  "cwl_pointer": "",
+  "description": "Run somatic Sentieon on tumor only",
+  "docker_image_name": "ACCOUNT/upstream_sentieon:VERSION",
+  "docker_registry_url": "https://console.aws.amazon.com/ecr/repositories/",
+  "institution": "INSTITUTION_UUID",
+  "name": "workflow_somatic_tumor_only_sentieon_VERSION",
+  "aliases": ["cgap:workflow_somatic_tumor_only_sentieon_VERSION"],
+  "steps": [
+      {
+          "inputs": [
+              {
+                  "meta": {
+                      "cardinality": "single",
+                      "file_format": "bam",
+                      "global": true,
+                      "type": "data file"
+                  },
+                  "name": "input_bam",
+                  "source": [
+                      {
+                          "name": "input_bam"
+                      }
+                  ]
+              },
+              {
+                  "meta": {
+                      "cardinality": "single",
+                      "file_format": "fa",
+                      "global": true,
+                      "type": "reference file"
+                  },
+                  "name": "reference_fa",
+                  "source": [
+                      {
+                          "name": "reference_fa"
+                      }
+                  ]
+              },
+              {
+                  "meta": {
+                      "cardinality": "single",
+                      "global": true,
+                      "type": "parameter"
+                  },
+                  "name": "samplename",
+                  "source": [
+                      {
+                          "name": "samplename"
+                      }
+                  ]
+              },
+              {
+                  "meta": {
+                      "cardinality": "single",
+                      "file_format": "vcf_gz",
+                      "global": true,
+                      "type": "reference file"
+                  },
+                  "name": "known-sites-snp",
+                  "source": [
+                      {
+                          "name": "known-sites-snp"
+                      }
+                  ]
+              }
+          ],
+          "meta": {
+              "analysis_step_types": [
+                  "Run somatic Sentieon with tumor only"
+              ],
+              "software_used": [
+                 "/softwares/9b818e1b-509a-416d-b535-cd36ff91321b"
+              ]
+          },
+          "name": "somatic Sention tumor only",
+          "outputs": [
+              {
+                  "meta": {
+                      "cardinality": "single",
+                      "file_format": "vcf_gz",
+                      "global": true,
+                      "type": "data file"
+                  },
+                  "name": "output_vcf_gz",
+                  "target": [
+                      {
+                          "name": "output_vcf_gz"
+                      }
+                  ]
+              }
+          ]
+      }
+  ],
+  "title": "Run somatic Sentieon on tumor only",
+  "uuid": "86fb6c34-cf76-49f8-88f3-a6a2ee258a95"
+}

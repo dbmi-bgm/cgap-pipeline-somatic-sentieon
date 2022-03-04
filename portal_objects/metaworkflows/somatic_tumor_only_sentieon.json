@@ -1,0 +1,72 @@
+{
+  "accession": "GAPMWFU58NCC",
+  "name": "wgs_somatic_sentieon",
+  "title": "WGS Somatic Sentieon VERSION",
+  "version": "VERSION",
+  "uuid": "e00e0d87-e062-482c-94c3-afd2075a2a3b",
+  "description": "Run tumor/normal somatic analysis using Sentieon",
+  "project": "PROJECT_UUID",
+  "institution": "INSTITUTION_UUID",
+  "input": [
+    {
+      "argument_name": "input_bams",
+      "argument_type": "file"
+    },
+    {
+      "argument_name": "sample_names",
+      "argument_type": "parameter"
+    },
+    {
+      "argument_name": "reference_fa",
+      "argument_type": "file",
+      "files": [{"file": "1936f246-22e1-45dc-bb5c-9cfd55537fe7"}]
+    },
+    {
+      "argument_name": "known-sites-snp",
+      "argument_type": "file",
+      "files": [{"file": "8ed35691-0af4-467a-adbc-81eb088549f0"}]
+    }
+  ],
+  "workflows": [
+    {
+      "name": "workflow_somatic_tumor_only_sention",
+      "workflow": "86fb6c34-cf76-49f8-88f3-a6a2ee258a95",
+      "config": {
+        "instance_type": "t3.2xlarge",
+        "ebs_size": "1.5x",
+        "EBS_optimized": true,
+        "spot_instance": true,
+        "run_name": "run_workflow_somatic_tumor_only_sentieon",
+        "behavior_on_capacity_limit": "wait_and_retry"
+      },
+      "custom_pf_fields": {
+          "output_vcf_gz": {
+              "file_type": "somatic Sentieon vcf",
+              "variant_type": "SNV",
+              "description": "somatic SNV and SV vcf from tumor only"
+          }
+      },
+      "input": [
+        {
+          "argument_name": "input_bam",
+          "argument_type": "file",
+          "source_argument_name": "input_bams",
+          "scatter": 1
+        },
+        {
+          "argument_name": "samplename",
+          "argument_type": "parameter",
+          "source_argument_name": "sample_names"
+        },
+        {
+          "argument_name": "reference_fa",
+          "argument_type": "file"
+        },
+        {
+          "argument_name": "known-sites-snp",
+          "argument_type": "file"
+        }
+      ]
+    }
+  ]
+}
