@@ -32,7 +32,7 @@
       "name": "workflow_somatic_tumor_only_sention",
       "workflow": "86fb6c34-cf76-49f8-88f3-a6a2ee258a95",
       "config": {
-        "instance_type": "t3.2xlarge",
+        "instance_type": "c5n.9xlarge",
         "ebs_size": "1.5x",
         "EBS_optimized": true,
         "spot_instance": true,
