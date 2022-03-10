@@ -63,25 +63,32 @@ def mate_checker(mateID, mate_dict):
             print(mateID, mate_dict[list(mate_dict[mateID].keys())[0]])
             raise Exception('bnd mates not reciprocal for '+mateID+' and '+list(mate_dict[mateID].keys())[0])
 
-def strand_finder(first_bnd):
-    first_alt = re.findall(r'([])([])', first_bnd.ALT)
-    first_strand = second_strand = '+'
+# def strand_finder(first_bnd):
+#     first_alt = re.findall(r'([])([])', first_bnd.ALT)
+#     first_strand = second_strand = '+'
+#
+#     # bnd square brackets must be in the same orientation
+#     if first_alt[0] == first_alt[1]:
+#         if first_bnd.ALT.startswith(first_alt[0]):
+#             first_strand = '-'
+#         if first_alt[0] == '[':
+#             second_strand = '-'
 
+def strand_finder(bnd):
+    alt = re.findall(r'([])([])', bnd.ALT)
+    #print(alt)
     # bnd square brackets must be in the same orientation
-    if first_alt[0] == first_alt[1]:
-        if first_bnd.ALT.startswith(first_alt[0]):
-            first_strand = '-'
-        if first_alt[0] == '[':
-            second_strand = '-'
+    try:
+        assert alt[0] == alt[1]
+        #print(alt)
+        # + strand if breakpoint after position, and - strand if breakpoint before position
+        if bnd.ALT.startswith(alt[0]):
+            return('-')
+        else:
+            return('+')
+    except AssertionError:
+        sys.exit(0)
 
-        return first_strand, second_strand
-    else:
-        raise Exception('bnd square brackets not matching for '+first_bnd.ID+' at '+first_bnd.CHROM+' '+first_bnd.POS)
-
-    # upstream bnd has ]]N, downstream bnd has N[[, that's a - +
-    # upstream bnd has N[[, downstream bnd has ]]N, that's a + -
-    # upstream bnd has [[N, downstream bnd has [[N, that's a - -
-    # upstream bnd has N]], downstream bnd has N]], that's a + +
 
 def create_bedpe(pair1, pair2):
     chromsome_order =  {
@@ -140,7 +147,7 @@ def create_bedpe(pair1, pair2):
         END2 = str(second_bnd.POS)
         NAME = first_bnd.ID
         SCORE = str(first_bnd.QUAL)
-        STRAND1, STRAND2 = strand_finder(first_bnd)
+        STRAND1, STRAND2 = strand_finder(first_bnd), strand_finder(second_bnd)
 
 
         bedpe_variant = [CHROM1, START1, END1, CHROM2, START2, END2, NAME, SCORE, STRAND1, STRAND2]
@@ -160,15 +167,20 @@ def main(args):
     #with open(out_file_name, 'w') as fo:
     with open(args['outputBEDPE'], 'w') as fo:
         for variant in mate_dict:
-            try:
-                #as we move down the list we will have variants that have been moved to finished_list
-                pair1, pair2 = mate_checker(variant, mate_dict)
-                print(pair1.CHROM, pair2.CHROM)
-                bedpe_variant = create_bedpe(pair1, pair2)
-                fo.write('\t'.join(bedpe_variant)+'\n')
+            pair1 = pair2 = False
+            if variant not in finished_list:
+                try:
+                    #as we move down the list we will have variants that have been moved to finished_list
+                    pair1, pair2 = mate_checker(variant, mate_dict)
+                    #print(pair1.CHROM, pair2.CHROM)
+                except:
+                    pass
 
-            except:
-                pass
+            if pair1 and pair2:
+                bedpe_variant = create_bedpe(pair1, pair2)
+
+                if bedpe_variant:
+                    fo.write('\t'.join(bedpe_variant)+'\n')
 
 ################################################
 #   MAIN
