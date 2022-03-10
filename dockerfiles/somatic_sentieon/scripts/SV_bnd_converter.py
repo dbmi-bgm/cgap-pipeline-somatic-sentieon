@@ -9,7 +9,7 @@
 ################################################
 #   Libraries
 ################################################
-import sys, argparse, subprocess
+import sys, os, argparse, subprocess
 from granite.lib import vcf_parser
 import re
 
@@ -22,11 +22,12 @@ def mate_matcher(vnt_obj, mate_dict):
         try:
             mate_dict[vnt_obj.ID] = {vnt_obj.get_tag_value("MATEID"):vnt_obj}
         except Exception:
-            print('no mate')
+            raise ValueError('\nERROR: no MATEID for '+vnt_obj.ID+'. Exiting\n')
+            #print('no mate')
     else:
-        print("duplicate?")
+        raise ValueError('\nERROR: duplicated bnd for '+vnt_obj.ID+'. Exiting\n')
 
-def vcf_scanner(vcf_input):#(args['inputvcf']):
+def vcf_scanner(vcf_input):
     #vcf = vcf_parser.Vcf(args['inputvcf'])
     vcf = vcf_parser.Vcf(vcf_input)
     mate_dict = {}
@@ -47,48 +48,35 @@ def mate_checker(mateID, mate_dict):
     # want to check that bnd1's mate (bnd2) has bnd1 as its mate in its entry in the dictionary
     # only want to do this once for each pair, so finished_list is imporant there
     mate_match = list(mate_dict[mateID].keys())[0]
-    if mateID not in finished_list:
-        if mateID == list(mate_dict[mate_match].keys())[0]:
-            # if they do match reciprocally, we want to store each of their vnt_objs from the original vcf file
-            pair1 = list(mate_dict[mateID].values())[0]
-            pair2 = list(mate_dict[mate_match].values())[0]
+    if mateID == list(mate_dict[mate_match].keys())[0]:
+        # if they do match reciprocally, we want to store each of their vnt_objs from the original vcf file
+        pair1 = list(mate_dict[mateID].values())[0]
+        pair2 = list(mate_dict[mate_match].values())[0]
 
-            # add the second mate to the finished_dict so that we only do the work once
-            finished_list.append(mate_match)
+        # add the second mate to the finished_dict so that we only do the work once
+        finished_list.append(mate_match)
 
-            #then return the pair of vnt_objs
-            return pair1, pair2
+        #then return the pair of vnt_objs
+        return pair1, pair2
 
-        else:
-            print(mateID, mate_dict[list(mate_dict[mateID].keys())[0]])
-            raise Exception('bnd mates not reciprocal for '+mateID+' and '+list(mate_dict[mateID].keys())[0])
-
-# def strand_finder(first_bnd):
-#     first_alt = re.findall(r'([])([])', first_bnd.ALT)
-#     first_strand = second_strand = '+'
-#
-#     # bnd square brackets must be in the same orientation
-#     if first_alt[0] == first_alt[1]:
-#         if first_bnd.ALT.startswith(first_alt[0]):
-#             first_strand = '-'
-#         if first_alt[0] == '[':
-#             second_strand = '-'
+    else:
+        raise ValueError('\nERROR: bnd mates not reciprocal for '+mateID+'. Exiting\n')
 
 def strand_finder(bnd):
     alt = re.findall(r'([])([])', bnd.ALT)
     #print(alt)
     # bnd square brackets must be in the same orientation
     try:
-        assert alt[0] == alt[1]
-        #print(alt)
-        # + strand if breakpoint after position, and - strand if breakpoint before position
+        assert alt[0] == alt[1], 'ALT square brackets must be in same orientation: [[ or ]]'
+
+        # + strand if breakpoint after position (e.g., A[), and - strand if breakpoint before position (e.g, [)
         if bnd.ALT.startswith(alt[0]):
             return('-')
         else:
             return('+')
-    except AssertionError:
-        sys.exit(0)
 
+    except AssertionError as e:
+        raise
 
 def create_bedpe(pair1, pair2):
     chromsome_order =  {
@@ -149,11 +137,8 @@ def create_bedpe(pair1, pair2):
         SCORE = str(first_bnd.QUAL)
         STRAND1, STRAND2 = strand_finder(first_bnd), strand_finder(second_bnd)
 
-
         bedpe_variant = [CHROM1, START1, END1, CHROM2, START2, END2, NAME, SCORE, STRAND1, STRAND2]
         return bedpe_variant
-
-
 
 def main(args):
 
@@ -169,12 +154,10 @@ def main(args):
         for variant in mate_dict:
             pair1 = pair2 = False
             if variant not in finished_list:
-                try:
-                    #as we move down the list we will have variants that have been moved to finished_list
-                    pair1, pair2 = mate_checker(variant, mate_dict)
-                    #print(pair1.CHROM, pair2.CHROM)
-                except:
-                    pass
+                #as we move down the list we will have variants that have been moved to finished_list
+                pair1, pair2 = mate_checker(variant, mate_dict)
+                #print(pair1.CHROM, pair2.CHROM)
+
 
             if pair1 and pair2:
                 bedpe_variant = create_bedpe(pair1, pair2)
