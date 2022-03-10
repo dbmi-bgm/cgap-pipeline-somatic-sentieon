@@ -13,19 +13,6 @@ import sys, argparse, subprocess
 from granite.lib import vcf_parser
 import re
 
-
-class sample_entry:
-    def __init__(self, CHROM1, START1, CHROM2, START2, NAME, SCORE, STRAND1, STRAND2):
-        self.CHROM1 = CHROM1
-        self.START1 = str(int(START1-1))
-        self.END1 = str(START1)
-        self.CHROM2 = CHROM2
-        self.START2 = str(int(START2-1))
-        self.END2 = str(START2)
-        self.NAME = self
-        self.STRAND1 = STRAND1
-        self.STRAND2 = STRAND2
-
 ################################################
 #   Functions
 ################################################
@@ -39,9 +26,9 @@ def mate_matcher(vnt_obj, mate_dict):
     else:
         print("duplicate?")
 
-def vcf_scanner():#(args['inputvcf']):
+def vcf_scanner(vcf_input):#(args['inputvcf']):
     #vcf = vcf_parser.Vcf(args['inputvcf'])
-    vcf = vcf_parser.Vcf('/Users/phil_hms/Desktop/somatic/SV_test_tumor_normal_with_panel.vcf')
+    vcf = vcf_parser.Vcf(vcf_input)
     mate_dict = {}
 
     for vnt_obj in vcf.parse_variants():
@@ -60,8 +47,6 @@ def mate_checker(mateID, mate_dict):
     # want to check that bnd1's mate (bnd2) has bnd1 as its mate in its entry in the dictionary
     # only want to do this once for each pair, so finished_list is imporant there
     mate_match = list(mate_dict[mateID].keys())[0]
-    #print(mate_match)
-    #print(finished_list)
     if mateID not in finished_list:
         if mateID == list(mate_dict[mate_match].keys())[0]:
             # if they do match reciprocally, we want to store each of their vnt_objs from the original vcf file
@@ -78,11 +63,6 @@ def mate_checker(mateID, mate_dict):
             print(mateID, mate_dict[list(mate_dict[mateID].keys())[0]])
             raise Exception('bnd mates not reciprocal for '+mateID+' and '+list(mate_dict[mateID].keys())[0])
 
-x = '[chr22:20272153[C'
-'[' in x
-
-first_alt = re.findall(r'([])([])', x)
-
 def strand_finder(first_bnd):
     first_alt = re.findall(r'([])([])', first_bnd.ALT)
     first_strand = second_strand = '+'
@@ -97,7 +77,6 @@ def strand_finder(first_bnd):
         return first_strand, second_strand
     else:
         raise Exception('bnd square brackets not matching for '+first_bnd.ID+' at '+first_bnd.CHROM+' '+first_bnd.POS)
-    # bnd square brackets must be in the same orientation
 
     # upstream bnd has ]]N, downstream bnd has N[[, that's a - +
     # upstream bnd has N[[, downstream bnd has ]]N, that's a + -
@@ -169,17 +148,17 @@ def create_bedpe(pair1, pair2):
 
 
 
-def main():
+def main(args):
 
     # fill the mate_dict with pairs
-    mate_dict = vcf_scanner()
+    mate_dict = vcf_scanner(args['inputvcf'])
 
     # get matched pairs from mate_dict
     global finished_list
     finished_list = []
 
     #with open(out_file_name, 'w') as fo:
-    with open('/Users/phil_hms/Desktop/somatic/SV_test_tumor_normal_with_panel.bedpe', 'w') as fo:
+    with open(args['outputBEDPE'], 'w') as fo:
         for variant in mate_dict:
             try:
                 #as we move down the list we will have variants that have been moved to finished_list
@@ -191,22 +170,16 @@ def main():
             except:
                 pass
 
-main()
-
-
 ################################################
 #   MAIN
 ################################################
-# if __name__ == '__main__':
-#
-#     parser = argparse.ArgumentParser(description='')
-#
-#     parser.add_argument('-i', '--inputvcf',  help='input sample vcf', required=True)
-#     parser.add_argument('-f', '--full', help='output VCF file for all variant types', required=True)
-#     parser.add_argument('-s', '--snv', help='output VCF file for SNVs', required=True)
-#     parser.add_argument('-d', '--indel', help='output VCF file for INDELs', required=True)
-#     parser.add_argument('-v', '--sv', help='output VCF file for SVs', required=True)
-#
-#     args = vars(parser.parse_args())
-#
-#     main(args)
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(description='')
+
+    parser.add_argument('-i', '--inputvcf',  help='input SV vcf', required=True)
+    parser.add_argument('-o', '--outputBEDPE', help='output bedPE', required=True)
+
+    args = vars(parser.parse_args())
+
+    main(args)
