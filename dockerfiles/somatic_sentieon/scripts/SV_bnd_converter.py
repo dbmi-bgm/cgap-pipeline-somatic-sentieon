@@ -6,6 +6,8 @@
 #
 ################################################
 
+
+
 ################################################
 #   Libraries
 ################################################
@@ -14,37 +16,76 @@ from granite.lib import vcf_parser
 import re
 
 ################################################
+#   Classes
+################################################
+
+
+class bnd:
+    def __init__(self, vnt_obj):
+        self.CHROM = vnt_obj.CHROM
+        self.POS = vnt_obj.POS
+        self.ID = vnt_obj.ID
+        self.REF = vnt_obj.REF
+        self.ALT = vnt_obj.ALT.split(",")
+        self.QUAL = vnt_obj.QUAL
+        self.INFO = vnt_obj.INFO
+        self.STRAND = [ "-" if any(alt.startswith(x) for x in ["[", "]"]) else "+" for alt in vnt_obj.ALT.split(",") ]
+        self.MATES = mate_lister(vnt_obj)
+
+
+#vcf = vcf_parser.Vcf("/Users/phil_hms/Desktop/somatic/SV_test_tumor_normal_with_panel.vcf")
+# vcf = vcf_parser.Vcf("/Users/phil_hms/Desktop/somatic/multi_match.vcf")
+# for vnt_obj in vcf.parse_variants():
+#     if vnt_obj.get_tag_value("SVTYPE") == "BND":
+#         bnd_obj = bnd(vnt_obj)
+#         print(bnd_obj.ID,bnd_obj.STRAND,bnd_obj.MATES)
+
+
+################################################
 #   Functions
 ################################################
 
-def mate_matcher(vnt_obj, mate_dict):
-    if vnt_obj.ID not in mate_dict:
-        try:
-            mate_dict[vnt_obj.ID] = {vnt_obj.get_tag_value("MATEID"):vnt_obj}
-        except Exception:
-            raise ValueError('\nERROR: no MATEID for '+vnt_obj.ID+'. Exiting\n')
-            #print('no mate')
+
+def mate_lister(vnt_obj):
+    try:
+        return vnt_obj.get_tag_value("MATEID").split(",")
+    except:
+        return []
+
+def mate_matcher(bnd_obj, mate_dict):
+    if bnd_obj.ID not in mate_dict:
+        if len(bnd_obj.MATES) == 1:
+            mate_dict[bnd_obj.ID] = {bnd_obj.MATES[0]:bnd_obj}
+
+        else:
+            raise ValueError('\nERROR: no MATEID for '+bnd_obj.ID+'. Exiting\n')
     else:
-        raise ValueError('\nERROR: duplicated bnd for '+vnt_obj.ID+'. Exiting\n')
+        raise ValueError('\nERROR: duplicated bnd for '+bnd_obj.ID+'. Exiting\n')
 
 def vcf_scanner(vcf_input):
     #vcf = vcf_parser.Vcf(args['inputvcf'])
     vcf = vcf_parser.Vcf(vcf_input)
     mate_dict = {}
+    bnd_list = []
 
     for vnt_obj in vcf.parse_variants():
         if vnt_obj.get_tag_value("SVTYPE") == "BND":
-            mate_matcher(vnt_obj,mate_dict)
+            bnd_list.append(vnt_obj.ID)
+            bnd_obj = bnd(vnt_obj)
+            mate_matcher(bnd_obj,mate_dict)
+        #more robust?
         else:
             #so far, I have only seen SVTYPE=INS in tumor only analyses
             #we will only support paired breakpoints at this point with BEDPE
             if vnt_obj.get_tag_value("SVTYPE") == "INS":
                 pass
 
-    return mate_dict
+    return mate_dict, bnd_list
 
+#create list of IDs and run the list removing keys from the dict.
+#dictionary.get? to check if key is there...
 def mate_checker(mateID, mate_dict):
-    # mate_dict has {bnd1: {bnd2: <granite.lib.vcf_parser.Vcf.Variant for bnd1>}}
+    # mate_dict has {bnd1: {bnd2: <bnd class object for bnd1>}}
     # want to check that bnd1's mate (bnd2) has bnd1 as its mate in its entry in the dictionary
     # only want to do this once for each pair, so finished_list is imporant there
     mate_match = list(mate_dict[mateID].keys())[0]
@@ -54,15 +95,19 @@ def mate_checker(mateID, mate_dict):
         pair2 = list(mate_dict[mate_match].values())[0]
 
         # add the second mate to the finished_dict so that we only do the work once
-        finished_list.append(mate_match)
+        #finished_list.append(mate_match)
+
+        #remove the second mate from the mate_dict to prevent doubling the work
+        del mate_dict[mate_match]
 
         #then return the pair of vnt_objs
-        return pair1, pair2
+        return pair1, pair2, mate_dict
 
     else:
         raise ValueError('\nERROR: bnd mates not reciprocal for '+mateID+'. Exiting\n')
 
 def strand_finder(bnd):
+    #if alt.startswith [ or ]
     alt = re.findall(r'([])([])', bnd.ALT)
     #print(alt)
     # bnd square brackets must be in the same orientation
@@ -79,83 +124,83 @@ def strand_finder(bnd):
         raise
 
 def create_bedpe(pair1, pair2):
-    chromsome_order =  {
-                    "chr1" : 1,
-                    "chr2" : 2,
-                    "chr3" : 3,
-                    "chr4" : 4,
-                    "chr5" : 5,
-                    "chr6" : 6,
-                    "chr7" : 7,
-                    "chr8" : 8,
-                    "chr9" : 9,
-                    "chr10" : 10,
-                    "chr11" : 11,
-                    "chr12" : 12,
-                    "chr13" : 13,
-                    "chr14" : 14,
-                    "chr15" : 15,
-                    "chr16" : 16,
-                    "chr17" : 17,
-                    "chr18" : 18,
-                    "chr19" : 19,
-                    "chr20" : 20,
-                    "chr21" : 21,
-                    "chr22" : 22,
-                    "chrX" : 23,
-                    "chrY" : 24
-                    }
+    chromosomes = ["chr1",
+                    "chr2",
+                    "chr3",
+                    "chr4",
+                    "chr5",
+                    "chr6",
+                    "chr7",
+                    "chr8",
+                    "chr9",
+                    "chr10",
+                    "chr11",
+                    "chr12",
+                    "chr13",
+                    "chr14",
+                    "chr15",
+                    "chr16",
+                    "chr17",
+                    "chr18",
+                    "chr19",
+                    "chr20",
+                    "chr21",
+                    "chr22",
+                    "chrX",
+                    "chrY"
+                ]
+
     #only want the main chromosomes
-    if pair1.CHROM not in chromsome_order or pair2.CHROM not in chromsome_order:
+    if pair1.CHROM not in chromosomes or pair2.CHROM not in chromosomes:
         pass
     else:
-        # need to determine which bnd will be #1 and which will be #2. this depends on the first one to appear in the genome
-        if pair1.CHROM == pair2.CHROM:
-            if pair1.POS < pair2.POS:
-                first_bnd = pair1
-                second_bnd = pair2
+        CHROM1 = pair1.CHROM
+        START1 = str(int(pair1.POS)-1)
+        END1 = str(pair1.POS)
+        CHROM2 = pair2.CHROM
+        START2 = str(int(pair2.POS)-1)
+        END2 = str(pair2.POS)
+        NAME = pair1.ID
+        SCORE = str(pair1.QUAL)
+        STRAND1 = pair1.STRAND[0]
+        STRAND2 = pair2.STRAND[0]
+
+        if CHROM1 == CHROM2:
+            if STRAND1 == "+":
+                if STRAND2 == "-":
+                    SVTYPE = "DEL" # DEL = +-
+                else:
+                    SVTYPE = "h2hINV" # h2hINV = ++
+
             else:
-                #might not happen
-                first_bnd = pair2
-                second_bnd = pair1
+                if STRAND2 == "+":
+                    SVTYPE = "DUP" # DUP = -+
+                else:
+                    SVTYPE = "t2tINV" # t2tINV = --
+
         else:
-            if chromsome_order[pair1.CHROM] < chromsome_order[pair2.CHROM]:
-                first_bnd = pair1
-                second_bnd = pair2
-            else:
-                #might not happen
-                first_bnd = pair2
-                second_bnd = pair1
+            SVTYPE = "TRA"
 
-        CHROM1 = first_bnd.CHROM
-        START1 = str(int(first_bnd.POS)-1)
-        END1 = str(first_bnd.POS)
-        CHROM2 = second_bnd.CHROM
-        START2 = str(int(second_bnd.POS)-1)
-        END2 = str(second_bnd.POS)
-        NAME = first_bnd.ID
-        SCORE = str(first_bnd.QUAL)
-        STRAND1, STRAND2 = strand_finder(first_bnd), strand_finder(second_bnd)
-
-        bedpe_variant = [CHROM1, START1, END1, CHROM2, START2, END2, NAME, SCORE, STRAND1, STRAND2]
+        bedpe_variant = [CHROM1, START1, END1, CHROM2, START2, END2, NAME, SCORE, STRAND1, STRAND2, SVTYPE, 'Sentieon_TNscope']
         return bedpe_variant
 
 def main(args):
 
     # fill the mate_dict with pairs
-    mate_dict = vcf_scanner(args['inputvcf'])
+    mate_dict, bnd_list = vcf_scanner(args['inputvcf'])
 
     # get matched pairs from mate_dict
-    global finished_list
-    finished_list = []
+    #global finished_list
+    #finished_list = []
 
     #with open(out_file_name, 'w') as fo:
     with open(args['outputBEDPE'], 'w') as fo:
-        for variant in mate_dict:
+        fo.write('\t'.join(["chrom1", "start1","end1","chrom2","start2","end2","sv_id","pe_support","strand1","strand2","svclass","svmethod"])+'\n')
+        for variant in bnd_list:
             pair1 = pair2 = False
-            if variant not in finished_list:
+            if variant in mate_dict:
                 #as we move down the list we will have variants that have been moved to finished_list
-                pair1, pair2 = mate_checker(variant, mate_dict)
+                pair1, pair2, mate_dict = mate_checker(variant, mate_dict)
                 #print(pair1.CHROM, pair2.CHROM)
 
 
