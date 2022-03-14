@@ -1,10 +1,10 @@
 {
   "accession": "GAPMWFU58NCC",
   "name": "wgs_somatic_sentieon",
-  "title": "WGS Somatic Sentieon VERSION",
+  "title": "WGS Somatic Sentieon Tumor Only VERSION",
   "version": "VERSION",
   "uuid": "e00e0d87-e062-482c-94c3-afd2075a2a3b",
-  "description": "Run tumor/normal somatic analysis using Sentieon",
+  "description": "Run tumor somatic analysis using Sentieon",
   "project": "PROJECT_UUID",
   "institution": "INSTITUTION_UUID",
   "input": [
@@ -13,7 +13,7 @@
       "argument_type": "file"
     },
     {
-      "argument_name": "sample_names",
+      "argument_name": "sample_name_tumor",
       "argument_type": "parameter"
     },
     {
@@ -56,7 +56,7 @@
         {
           "argument_name": "samplename",
           "argument_type": "parameter",
-          "source_argument_name": "sample_names"
+          "source_argument_name": "sample_name_tumor"
         },
         {
           "argument_name": "reference_fa",
