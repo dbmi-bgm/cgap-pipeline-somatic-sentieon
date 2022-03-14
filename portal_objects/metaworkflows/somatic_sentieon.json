@@ -1,0 +1,99 @@
+{
+  "accession": "GAPMWFF8CKIL",
+  "name": "wgs_somatic_tumor_normal_sentieon",
+  "title": "WGS Somatic Sentieon VERSION",
+  "version": "VERSION",
+  "uuid": "6e190937-e0b2-429d-b2bb-40046f0033b2",
+  "description": "Run tumor/normal somatic analysis using Sentieon",
+  "project": "PROJECT_UUID",
+  "institution": "INSTITUTION_UUID",
+  "input": [
+    {
+      "argument_name": "input_bam_tumor",
+      "argument_type": "file"
+    },
+    {
+      "argument_name": "input_bam_normal",
+      "argument_type": "file"
+    },
+    {
+      "argument_name": "sample_name_tumor",
+      "argument_type": "parameter"
+    },
+    {
+      "argument_name": "sample_name_normal",
+      "argument_type": "parameter"
+    },
+    {
+      "argument_name": "reference_fa",
+      "argument_type": "file",
+      "files": [{"file": "1936f246-22e1-45dc-bb5c-9cfd55537fe7"}]
+    },
+    {
+      "argument_name": "known-sites-snp",
+      "argument_type": "file",
+      "files": [{"file": "8ed35691-0af4-467a-adbc-81eb088549f0"}]
+    },
+    {
+      "argument_name": "panel_of_normals",
+      "argument_type": "file",
+      "files": [{"file": "833c91e9-a8cd-470e-8100-32b49ed14159"}]
+    }
+  ],
+  "workflows": [
+    {
+      "name": "workflow_somatic_tumor_normal_sention",
+      "workflow": "eb4f318f-5f9e-42dd-a62f-7303e3d87cea",
+      "config": {
+        "instance_type": "c5n.9xlarge",
+        "ebs_size": "1.5x",
+        "EBS_optimized": true,
+        "spot_instance": true,
+        "run_name": "run_workflow_somatic_tumor_only_sentieon",
+        "behavior_on_capacity_limit": "wait_and_retry"
+      },
+      "custom_pf_fields": {
+          "output_vcf_gz": {
+              "file_type": "somatic Sentieon vcf",
+              "variant_type": "SNV",
+              "description": "somatic SNV and SV vcf from tumor normal pair"
+          }
+      },
+      "input": [
+        {
+          "argument_name": "input_bam_tumor",
+          "argument_type": "file",
+          "scatter": 1
+        },
+        {
+          "argument_name": "input_bam_normal",
+          "argument_type": "file",
+          "scatter": 1
+        },
+        {
+          "argument_name": "tumorname",
+          "argument_type": "parameter",
+          "source_argument_name": "sample_name_tumor"
+        },
+        {
+          "argument_name": "normalname",
+          "argument_type": "parameter",
+          "source_argument_name": "sample_name_normal"
+        },
+        {
+          "argument_name": "reference_fa",
+          "argument_type": "file"
+        },
+        {
+          "argument_name": "known-sites-snp",
+          "argument_type": "file"
+        },
+        {
+          "argument_name": "pon",
+          "argument_type": "file",
+          "source_argument_name": "panel_of_normals"
+        }
+      ]
+    }
+  ]
+}
