@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # *******************************************
 # Script to run somatic Sentieon (TNscope)
@@ -13,9 +13,9 @@ normal_bam=$3
 normal_name=$4
 
 # reference data files
-reference_fa=$3
-dbsnp=$4
-pon=$5
+reference_fa=$5
+dbsnp=$6
+pon=$7
 
 ## Other settings
 nt=$(nproc) #number of threads to use in computation, set to number of cores in the server
@@ -26,8 +26,8 @@ nt=$(nproc) #number of threads to use in computation, set to number of cores in 
 
 # need to have unique readgroups for the tumor and somatic samples
 
-samtools view -H $tumor_bam | grep "RG" | awk '{print $2}' | awk 'BEGIN { FS = ":" } ; { print $2 }' > tumor_read_groups.txt
-samtools view -H $normal_bam | grep "RG" | awk '{print $2}' | awk 'BEGIN { FS = ":" } ; { print $2 }' > normal_read_groups.txt
+samtools view -H $tumor_bam | grep "@RG" | awk '{print $2}' | awk 'BEGIN { FS = ":" } ; { print $2 }' > tumor_read_groups.txt
+samtools view -H $normal_bam | grep "@RG" | awk '{print $2}' | awk 'BEGIN { FS = ":" } ; { print $2 }' > normal_read_groups.txt
 
 #possible that read groups match between tumor and normal, and for TNscope they need to be unique. in the case that they do match (then statement) we replace everything with something generic ()
 if [ $(grep -f tumor_read_groups.txt normal_read_groups.txt | wc -l) -gt 0 ]
