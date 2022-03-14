@@ -7,9 +7,8 @@
 # *******************************************
 
 ## Command line arguments
-# input bam
-raw_bam=$1
-sample_name=$2
+tumor_bam=$1
+tumor_name=$2
 
 # reference data files
 reference_fa=$3
@@ -22,7 +21,7 @@ nt=$(nproc) #number of threads to use in computation, set to number of cores in 
 # 1. Run TNscope
 # ******************************************
 
-sentieon driver -t $nt -r $reference_fa -i $raw_bam --algo TNscope --tumor_sample $sample_name output.vcf || exit 1
+sentieon driver -t $nt -r $reference_fa -i $tumor_bam --algo TNscope --tumor_sample $tumor_name output.vcf || exit 1
 
 # ******************************************
 # 2. Compress and index output
