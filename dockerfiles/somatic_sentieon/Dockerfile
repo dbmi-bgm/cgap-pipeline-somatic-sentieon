@@ -56,9 +56,11 @@ RUN wget https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9
     cd .. && \
     ln -s samtools-1.9 samtools
 
-# Sentieon somatic tumor only
+# Sentieon somatic bash scripts
 COPY somatic_sentieon_tumor_only.sh .
 RUN chmod +x somatic_sentieon_tumor_only.sh
+COPY somatic_sentieon_tumor_normal.sh .
+RUN chmod +x somatic_sentieon_tumor_normal.sh
 
 # env paths
 ENV PATH=/usr/local/bin/sentieon/bin/:$PATH
