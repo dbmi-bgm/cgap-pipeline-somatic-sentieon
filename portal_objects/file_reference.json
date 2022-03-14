@@ -39,5 +39,23 @@
         ],
         "status": "uploading",
         "accession": "GAPFI4LJRN98"
+    },
+    {
+        "uuid": "833c91e9-a8cd-470e-8100-32b49ed14159",
+        "institution": "INSTITUTION_UUID",
+        "project": "PROJECT_UUID",
+        "file_format": "vcf_gz",
+        "description": "UGRP Sentieon somatic Panel Of Normals",
+        "aliases": [
+            "cgap:UGRP_Sentieon_somatic_PON"
+        ],
+        "extra_files": [
+            {
+                "file_format": "vcf_gz_tbi",
+                "status": "uploading"
+            }
+        ],
+        "status": "uploading",
+        "accession": "GAPFIV1QKYU9"
     }
 ]
