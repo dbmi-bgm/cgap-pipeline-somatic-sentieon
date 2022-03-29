@@ -1,22 +1,34 @@
-FROM cgap/cgap-ubuntu2104-py-38:0.0.1
-MAINTAINER Michele Berselli (berselli.michele@gmail.com), Phil Grayson (phil.d.grayson@gmail.com)
+#######################################################################
+#     Basic image
+#######################################################################
+FROM cgap/cgap-ubuntu2004-py-38:0.0.1
+MAINTAINER Phil Grayson (phil.d.grayson@gmail.com), Michele Berselli (berselli.michele@gmail.com)
 
-# general updates & installing necessary Linux components
+#######################################################################
+#     General updates & installing necessary Linux components
+#       - libncurses-dev, libbz2-dev, liblzma-dev used by samtools
+#######################################################################
 RUN apt-get update -y && apt-get install -y \
+    locales \
     tabix \
     libncurses-dev \
     libbz2-dev \
-    liblzma-dev \
-    locales
+    liblzma-dev
 
+#######################################################################
+#     Setting working env
+#######################################################################
 WORKDIR /usr/local/bin
 
-# sentieon
+#######################################################################
+#     Software
+#######################################################################
+## sentieon
 RUN wget https://s3.amazonaws.com/sentieon-release/software/sentieon-genomics-202112.01.tar.gz && \
     tar -xzvf sentieon-genomics-202112.01.tar.gz && \
     ln -s sentieon-genomics-202112.01 sentieon
 
-# samtools
+## samtools
 RUN wget https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2 && \
     tar -xjf samtools-1.9.tar.bz2 && \
     rm -rf samtools-1.9.tar.bz2 && \
@@ -26,18 +38,25 @@ RUN wget https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9
     cd .. && \
     ln -s samtools-1.9 samtools
 
-# Sentieon somatic bash scripts
+#######################################################################
+#     Scripts
+#######################################################################
+## somatic_sentieon_tumor_only
 COPY somatic_sentieon_tumor_only.sh .
 RUN chmod +x somatic_sentieon_tumor_only.sh
+
+## somatic_sentieon_tumor_normal
 COPY somatic_sentieon_tumor_normal.sh .
 RUN chmod +x somatic_sentieon_tumor_normal.sh
 
-# env paths
+#######################################################################
+#     Setting env variables
+#######################################################################
 ENV PATH=/usr/local/bin/sentieon/bin/:$PATH
 ENV PATH=/usr/local/bin/samtools/:$PATH
 
-CMD ["bash"]
-
-# supporting UTF-8
+## Supporting UTF-8
 RUN locale-gen "en_US.UTF-8" && update-locale LC_ALL="en_US.UTF-8"
 ENV LC_ALL=en_US.UTF-8
+
+CMD ["bash"]

@@ -36,8 +36,6 @@
   "cwl_main_filename": "sentieon_somatic_tumor_only.cwl",
   "cwl_pointer": "",
   "description": "Run somatic Sentieon on tumor only",
-  "docker_image_name": "ACCOUNT/upstream_sentieon:VERSION",
-  "docker_registry_url": "https://console.aws.amazon.com/ecr/repositories/",
   "institution": "INSTITUTION_UUID",
   "name": "workflow_somatic_tumor_only_sentieon_VERSION",
   "aliases": ["cgap:workflow_somatic_tumor_only_sentieon_VERSION"],

@@ -13,6 +13,16 @@
         "uuid": "0cd4e777-a596-4927-95c8-b07716121aa3"
     },
     {
+        "file_format": "dict",
+        "standard_file_extension": "dict",
+        "description": "extra file of genome reference fasta",
+        "uuid": "4ed9f7e0-2b2f-4aca-9533-a0a652b43442",
+        "project": "PROJECT_UUID",
+        "institution": "INSTITUTION_UUID",
+        "status": "shared",
+        "valid_item_types": ["FileReference"]
+    },
+    {
         "file_format": "fa_fai",
         "standard_file_extension": "fa.fai",
         "description": "extra file of genome reference fasta",
@@ -81,16 +91,6 @@
         "institution": "INSTITUTION_UUID",
         "status": "shared",
         "valid_item_types": ["FileReference", "FileProcessed"]
-    },
-    {
-        "file_format": "md5_list",
-        "standard_file_extension": "md5_list",
-        "description": "list of md5 in the format of cramtools getref output",
-        "uuid": "1362126e-e6ee-4010-9fb8-06e9b39dbb83",
-        "project": "PROJECT_UUID",
-        "institution": "INSTITUTION_UUID",
-        "status": "shared",
-        "valid_item_types": ["FileReference"]
     },
     {
         "file_format": "bed",

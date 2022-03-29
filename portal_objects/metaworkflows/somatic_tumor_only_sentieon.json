@@ -4,7 +4,7 @@
   "title": "WGS Somatic Sentieon Tumor Only VERSION",
   "version": "VERSION",
   "uuid": "e00e0d87-e062-482c-94c3-afd2075a2a3b",
-  "description": "Run tumor somatic analysis using Sentieon",
+  "description": "Run tumor somatic analysis using Sentieon TNscope (SV, SNV, INDEL)",
   "project": "PROJECT_UUID",
   "institution": "INSTITUTION_UUID",
   "input": [

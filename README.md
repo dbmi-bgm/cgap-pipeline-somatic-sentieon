@@ -2,7 +2,7 @@
 
 # CGAP Somatic Pipeline - Sentieon
 
-This repository contains components for the CGAP Somatic Pipeline for SNVs, INDELs, and SVs using Sentieon:
+This repository contains components for the CGAP pipeline for somatic single-nucleotide variants (SNVs), small INDELs, and structural variants (SVs) using Sentieon:
 
   * CWL workflows
   * CGAP Portal Workflows and MetaWorkflows objects
@@ -14,5 +14,4 @@ For more details check the [*documentation*](https://cgap-pipeline-main.readthed
 ### Version Updates
 
 #### v1.0.0
-
-Coming soon...
+* Initial release for TNscope pipeline

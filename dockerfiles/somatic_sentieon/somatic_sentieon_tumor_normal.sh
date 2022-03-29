@@ -29,7 +29,13 @@ nt=$(nproc) #number of threads to use in computation, set to number of cores in 
 samtools view -H $tumor_bam | grep "@RG" | awk '{print $2}' | awk 'BEGIN { FS = ":" } ; { print $2 }' > tumor_read_groups.txt || exit 1
 samtools view -H $normal_bam | grep "@RG" | awk '{print $2}' | awk 'BEGIN { FS = ":" } ; { print $2 }' > normal_read_groups.txt || exit 1
 
-#possible that read groups match between tumor and normal, and for TNscope they need to be unique. in the case that they do match ('then' statement) we replace everything with something generic (https://support.sentieon.com/manual/examples/examples/?highlight=tnscope#modify-rg-information-on-bam-files-when-both-tumor-and-normal-inputs-have-the-same-rgid), otherwise, we use the existing read groups
+# it is possible that read groups match between tumor and normal,
+#   and for TNscope they need to be unique.
+#   In the case that they do match ('then' statement) we replace
+#   everything with something generic
+#   (https://support.sentieon.com/manual/examples/examples/?highlight=tnscope#modify-rg-information-on-bam-files-when-both-tumor-and-normal-inputs-have-the-same-rgid),
+#   otherwise, we use the existing read groups.
+
 if [ $(grep -f tumor_read_groups.txt normal_read_groups.txt | wc -l) -gt 0 ]
 then
   declare -i n=0; for i in $(cat tumor_read_groups.txt); do n+=1; tumor_replace+=" --replace_rg ${i}=ID:T_${n}\tSM:TUMOR\tPL:PLATFORM"; done
