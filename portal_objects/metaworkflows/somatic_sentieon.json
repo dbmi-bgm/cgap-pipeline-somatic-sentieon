@@ -1,7 +1,7 @@
 {
   "accession": "GAPMWFF8CKIL",
-  "name": "wgs_somatic_tumor_normal_sentieon",
-  "title": "WGS Somatic Sentieon VERSION",
+  "name": "WGS_somatic_sentieon_tnscope",
+  "title": "WGS Somatic Sentieon-TNscope VERSION",
   "version": "VERSION",
   "uuid": "6e190937-e0b2-429d-b2bb-40046f0033b2",
   "description": "Run tumor/normal somatic analysis using Sentieon TNscope (SV, SNV, INDEL)",
@@ -10,19 +10,23 @@
   "input": [
     {
       "argument_name": "input_bam_tumor",
-      "argument_type": "file"
+      "argument_type": "file",
+      "dimensionality": 1
     },
     {
       "argument_name": "input_bam_normal",
-      "argument_type": "file"
+      "argument_type": "file",
+      "dimensionality": 1
     },
     {
       "argument_name": "sample_name_tumor",
-      "argument_type": "parameter"
+      "argument_type": "parameter",
+      "value_type": "string"
     },
     {
       "argument_name": "sample_name_normal",
-      "argument_type": "parameter"
+      "argument_type": "parameter",
+      "value_type": "string"
     },
     {
       "argument_name": "reference_fa",
@@ -49,26 +53,25 @@
         "ebs_size": "1.5x",
         "EBS_optimized": true,
         "spot_instance": true,
-        "run_name": "run_workflow_somatic_tumor_only_sentieon",
+        "run_name": "run_workflow_somatic_tumor_normal_sention",
         "behavior_on_capacity_limit": "wait_and_retry"
       },
       "custom_pf_fields": {
           "output_vcf_gz": {
-              "file_type": "somatic Sentieon vcf",
-              "variant_type": "SNV",
-              "description": "somatic SNV and SV vcf from tumor normal pair"
+              "file_type": "TNscope vcf",
+              "description": "output from sentieon TNscope for tumor/normal in vcf format"
           }
       },
       "input": [
         {
           "argument_name": "input_bam_tumor",
           "argument_type": "file",
-          "scatter": 1
+          "input_dimension": 1
         },
         {
           "argument_name": "input_bam_normal",
           "argument_type": "file",
-          "scatter": 1
+          "input_dimension": 1
         },
         {
           "argument_name": "tumorname",
