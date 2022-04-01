@@ -31,14 +31,14 @@
   ],
   "workflows": [
     {
-      "name": "workflow_somatic_tumor_only_sention",
+      "name": "workflow_somatic_sentieon_tnscope_tumoronly",
       "workflow": "86fb6c34-cf76-49f8-88f3-a6a2ee258a95",
       "config": {
         "instance_type": "c5n.9xlarge",
         "ebs_size": "1.5x",
         "EBS_optimized": true,
         "spot_instance": true,
-        "run_name": "run_workflow_somatic_tumor_only_sentieon",
+        "run_name": "run_workflow_somatic_sentieon_tnscope_tumoronly",
         "behavior_on_capacity_limit": "wait_and_retry"
       },
       "custom_pf_fields": {

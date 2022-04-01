@@ -1,6 +1,6 @@
 {
   "accession": "GAPWFV99QX4V",
-  "app_name": "workflow_somatic_tumor_only_sention",
+  "app_name": "workflow_somatic_sentieon_tnscope_tumoronly",
   "app_version": "VERSION",
   "arguments": [
       {
@@ -35,10 +35,10 @@
   "cwl_directory_url_v1": "s3://CWLBUCKET/PIPELINE/VERSION",
   "cwl_main_filename": "sentieon_somatic_tumor_only.cwl",
   "cwl_pointer": "",
-  "description": "Run somatic Sentieon on tumor only",
+  "description": "Run Sentieon TNscope for somatic analysis on tumor only",
   "institution": "INSTITUTION_UUID",
-  "name": "workflow_somatic_tumor_only_sentieon_VERSION",
-  "aliases": ["cgap:workflow_somatic_tumor_only_sentieon_VERSION"],
+  "name": "workflow_somatic_sentieon_tnscope_tumoronly_VERSION",
+  "aliases": ["cgap:workflow_somatic_sentieon_tnscope_tumoronly_VERSION"],
   "steps": [
       {
           "inputs": [
@@ -100,13 +100,13 @@
           ],
           "meta": {
               "analysis_step_types": [
-                  "Run somatic Sentieon with tumor only"
+                  "Run somatic Sentieon TNscope tumor only"
               ],
               "software_used": [
                  "/softwares/9b818e1b-509a-416d-b535-cd36ff91321b"
               ]
           },
-          "name": "somatic Sention tumor only",
+          "name": "Sention TNscope tumor only",
           "outputs": [
               {
                   "meta": {
@@ -125,6 +125,6 @@
           ]
       }
   ],
-  "title": "Run somatic Sentieon on tumor only",
+  "title": "Run Sentieon TNscope for somatic analysis on tumor only",
   "uuid": "86fb6c34-cf76-49f8-88f3-a6a2ee258a95"
 }

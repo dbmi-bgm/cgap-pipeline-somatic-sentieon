@@ -1,6 +1,6 @@
 {
   "accession": "GAPWFWM8J3VI",
-  "app_name": "workflow_somatic_tumor_only_sention",
+  "app_name": "workflow_somatic_sentieon_tnscope",
   "app_version": "VERSION",
   "arguments": [
       {
@@ -49,10 +49,10 @@
   "cwl_directory_url_v1": "s3://CWLBUCKET/PIPELINE/VERSION",
   "cwl_main_filename": "sentieon_somatic_tumor_normal.cwl",
   "cwl_pointer": "",
-  "description": "Run somatic Sentieon on tumor normal pair",
+  "description": "Run Sentieon TNscope for somatic analysis on tumor-normal",
   "institution": "INSTITUTION_UUID",
-  "name": "workflow_somatic_tumor_normal_sentieon_VERSION",
-  "aliases": ["cgap:workflow_somatic_tumor_normal_sentieon_VERSION"],
+  "name": "workflow_somatic_sentieon_tnscope_VERSION",
+  "aliases": ["cgap:workflow_somatic_sentieon_tnscope_VERSION"],
   "steps": [
       {
           "inputs": [
@@ -155,13 +155,13 @@
           ],
           "meta": {
               "analysis_step_types": [
-                  "Run somatic Sentieon with tumor normal pair"
+                  "Run somatic Sentieon TNscope tumor-normal"
               ],
               "software_used": [
                  "/softwares/9b818e1b-509a-416d-b535-cd36ff91321b"
               ]
           },
-          "name": "somatic Sention tumor normal",
+          "name": "Sention TNscope tumor-normal",
           "outputs": [
               {
                   "meta": {
@@ -180,6 +180,6 @@
           ]
       }
   ],
-  "title": "Run somatic Sentieon on tumor normal pair",
+  "title": "Run Sentieon TNscope for somatic analysis on tumor-normal",
   "uuid": "eb4f318f-5f9e-42dd-a62f-7303e3d87cea"
 }

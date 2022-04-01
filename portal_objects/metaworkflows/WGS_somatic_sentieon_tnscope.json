@@ -4,7 +4,7 @@
   "title": "WGS Somatic Sentieon-TNscope VERSION",
   "version": "VERSION",
   "uuid": "6e190937-e0b2-429d-b2bb-40046f0033b2",
-  "description": "Run tumor/normal somatic analysis using Sentieon TNscope (SV, SNV, INDEL)",
+  "description": "Run tumor-normal somatic analysis using Sentieon TNscope (SV, SNV, INDEL)",
   "project": "PROJECT_UUID",
   "institution": "INSTITUTION_UUID",
   "input": [
@@ -46,20 +46,20 @@
   ],
   "workflows": [
     {
-      "name": "workflow_somatic_tumor_normal_sention",
+      "name": "workflow_somatic_sentieon_tnscope",
       "workflow": "eb4f318f-5f9e-42dd-a62f-7303e3d87cea",
       "config": {
         "instance_type": "c5n.9xlarge",
         "ebs_size": "1.5x",
         "EBS_optimized": true,
         "spot_instance": true,
-        "run_name": "run_workflow_somatic_tumor_normal_sention",
+        "run_name": "run_workflow_somatic_sentieon_tnscope",
         "behavior_on_capacity_limit": "wait_and_retry"
       },
       "custom_pf_fields": {
           "output_vcf_gz": {
               "file_type": "TNscope vcf",
-              "description": "output from sentieon TNscope for tumor/normal in vcf format"
+              "description": "output from sentieon TNscope for tumor-normal in vcf format"
           }
       },
       "input": [
