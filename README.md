@@ -10,8 +10,3 @@ This repository contains components for the CGAP pipeline for somatic single-nuc
 
 The pipeline can process analysis ready ``bam`` files for a tumor/normal comparison and produces a `vcf` file as output.
 For more details check the [*documentation*](https://cgap-pipeline-main.readthedocs.io/en/latest/Pipelines/Downstream/Downstream_pipelines.html#somatic).
-
-### Version Updates
-
-#### v1.0.0
-* Initial release for TNscope pipeline
