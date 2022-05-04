@@ -45,9 +45,9 @@
         "institution": "INSTITUTION_UUID",
         "project": "PROJECT_UUID",
         "file_format": "vcf_gz",
-        "description": "UGRP Sentieon somatic Panel Of Normals",
+        "description": "UGRP Sentieon somatic Panel Of Normals 202112.01",
         "aliases": [
-            "cgap:UGRP_Sentieon_somatic_PON"
+            "cgap:UGRP_Sentieon_somatic_PON_202112.01"
         ],
         "extra_files": [
             {
