@@ -14,9 +14,6 @@ input:
   input_bams:
     argument_type: file.bam
     dimensionality: 1
-  
-  sample_name_tumor:
-    argument_type: parameter.string
 
   reference_fa:
     argument_type: file.fa
@@ -27,6 +24,10 @@ input:
     argument_type: file.vcf_gz
     files:
       - dbsnp-common@151
+
+  # Parameter argument
+  sample_name_tumor:
+    argument_type: parameter.string
 
 ## Workflows and dependencies ###############################
 #     Information for the workflows and their dependencies
@@ -67,7 +68,7 @@ workflows:
       # File output
       output_vcf_gz:
         file type: TNscope VCF
-        description: output from Sentieon TNscope Tumor only in VCF format
+        description: output from Sentieon TNscope for a tumor sample in VCF format
         variant_type: SNV_INDEL_SV
 
 ## EC2 Configuration to use ########
