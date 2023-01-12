@@ -52,36 +52,36 @@ workflows:
   ############################################
   somatic_sentieon_tnscope:
 
-  ## Specific arguments ##############
-  ####################################
-  input:
+    ## Specific arguments ##############
+    ####################################
+    input:
 
-    # File argument
-    input_bam_tumor:
-      argument_type: file.bam
-      input_dimension: 1
-    
-    input_bam_normal:
-      argument_type: file.bam
-      input_dimension: 1
-    
-    tumorname:
-      argument_type: parameter.string
-      source_argument_name: sample_name_tumor
-    
-    normalname:
-      argument_type: parameter.string
-      source_argument_name: sample_name_normal
+      # File argument
+      input_bam_tumor:
+        argument_type: file.bam
+        input_dimension: 1
+      
+      input_bam_normal:
+        argument_type: file.bam
+        input_dimension: 1
+      
+      tumorname:
+        argument_type: parameter.string
+        source_argument_name: sample_name_tumor
+      
+      normalname:
+        argument_type: parameter.string
+        source_argument_name: sample_name_normal
 
-    reference_fa:
-      argument_type: file.fa
-    
-    known-sites-snp:
-      argument_type: file.vcf_gz
-    
-    pon:
-      argument_type: file.vcf_gz
-      source_argument_name: panel_of_normals
+      reference_fa:
+        argument_type: file.fa
+      
+      known-sites-snp:
+        argument_type: file.vcf_gz
+      
+      pon:
+        argument_type: file.vcf_gz
+        source_argument_name: panel_of_normals
 
     ## Output ##########################
     #     Output files for the workflow
@@ -90,16 +90,16 @@ workflows:
 
       # File output
       output_vcf_gz:
-        file type: TNscope VCF
+        file_type: TNscope VCF
         description: output from Sentieon TNscope for tumor-normal paired samples in VCF format
-        variant_type: SNV_INDEL_SV
+        variant_type: SNV #_INDEL_SV
 
-## EC2 Configuration to use ########
-####################################
-config:
-  instance_type: c5n.9xlarge
-  ebs_size: 1.5x
-  EBS_optimized: True
-  spot_instance: True
-  run_name: run_somatic_sentieon_tnscope
-  behavior_on_capacity_limit: wait_and_retry
+    ## EC2 Configuration to use ########
+    ####################################
+    config:
+      instance_type: c5n.9xlarge
+      ebs_size: 1.5x
+      EBS_optimized: True
+      spot_instance: True
+      run_name: run_somatic_sentieon_tnscope
+      behavior_on_capacity_limit: wait_and_retry

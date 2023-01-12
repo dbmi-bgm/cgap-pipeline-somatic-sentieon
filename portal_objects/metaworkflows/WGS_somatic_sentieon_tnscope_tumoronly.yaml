@@ -41,23 +41,23 @@ workflows:
 
   ## Specific arguments ##############
   ####################################
-  input:
+    input:
 
-    # File argument
-    input_bam:
-      argument_type: file.bam
-      source_argument_name: input_bams
-      input_dimension: 1
-   
-    samplename:
-      argument_type: parameter.string
-      source_argument_name: sample_name_tumor
-
-    reference_fa:
-      argument_type: file.fa
+      # File argument
+      input_bam:
+        argument_type: file.bam
+        source_argument_name: input_bams
+        input_dimension: 1
     
-    known-sites-snp:
-      argument_type: file.vcf_gz
+      samplename:
+        argument_type: parameter.string
+        source_argument_name: sample_name_tumor
+
+      reference_fa:
+        argument_type: file.fa
+      
+      known-sites-snp:
+        argument_type: file.vcf_gz
 
 
     ## Output ##########################
@@ -67,16 +67,16 @@ workflows:
 
       # File output
       output_vcf_gz:
-        file type: TNscope VCF
+        file_type: TNscope VCF
         description: output from Sentieon TNscope for a tumor sample in VCF format
-        variant_type: SNV_INDEL_SV
+        variant_type: SNV #_INDEL_SV
 
-## EC2 Configuration to use ########
-####################################
-config:
-  instance_type: c5n.9xlarge
-  ebs_size: 1.5x
-  EBS_optimized: True
-  spot_instance: True
-  run_name: run_somatic_sentieon_tnscope
-  behavior_on_capacity_limit: wait_and_retry
+    ## EC2 Configuration to use ########
+    ####################################
+    config:
+      instance_type: c5n.9xlarge
+      ebs_size: 1.5x
+      EBS_optimized: True
+      spot_instance: True
+      run_name: run_somatic_sentieon_tnscope
+      behavior_on_capacity_limit: wait_and_retry
