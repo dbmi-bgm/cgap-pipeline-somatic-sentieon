@@ -1,0 +1,47 @@
+## Workflow information #####################################
+#     General information for the workflow
+#############################################################
+name: somatic_sentieon_tnscope
+description: Run Sentieon TNscope for somatic analysis on tumor-normal paired samples.
+
+runner:
+  language: cwl
+  main: sentieon_somatic_tumor_normal.cwl
+
+software:
+  - Sentieon@202112.01
+
+## Input information ########################################
+#     Input files and parameters
+#############################################################
+input:
+
+  # File argument
+  input_bam_tumor:
+    argument_type: file.bam
+
+  input_bam_normal:
+    argument_type: file.bam
+  
+  tumorname:
+    argument_type: parameter.string
+  
+  pon:
+    argument_type: file.vcf_gz
+  
+  reference_fa:
+    argument_type: file.fa
+  
+  known-sites-snp:
+    argument_type: file.vcf_gz
+
+## Output information #######################################
+#     Output files and quality controls
+#############################################################
+output:
+
+  # File output
+  output_vcf_gz:
+    argument_type: file.vcf_gz
+    secondary_files:
+      - vcf_gz_tbi
