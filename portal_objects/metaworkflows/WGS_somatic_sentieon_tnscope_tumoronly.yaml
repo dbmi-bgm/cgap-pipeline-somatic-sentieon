@@ -56,9 +56,9 @@ workflows:
         argument_type: file.vcf_gz
 
       # Parameter argument
-        samplename:
-          argument_type: parameter.string
-          source_argument_name: sample_name_tumor
+      samplename:
+        argument_type: parameter.string
+        source_argument_name: sample_name_tumor
 
 
 
