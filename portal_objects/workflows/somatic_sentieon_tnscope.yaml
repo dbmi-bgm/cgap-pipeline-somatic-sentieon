@@ -22,10 +22,7 @@ input:
 
   input_bam_normal:
     argument_type: file.bam
-  
-  tumorname:
-    argument_type: parameter.string
-  
+
   pon:
     argument_type: file.vcf_gz
   
@@ -34,6 +31,13 @@ input:
   
   known-sites-snp:
     argument_type: file.vcf_gz
+
+  # Parameter argument
+  tumorname:
+    argument_type: parameter.string
+
+  normalname:
+    argument_type: parameter.string
 
 ## Output information #######################################
 #     Output files and quality controls

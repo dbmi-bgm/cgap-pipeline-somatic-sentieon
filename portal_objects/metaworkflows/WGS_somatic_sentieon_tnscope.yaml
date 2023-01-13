@@ -34,7 +34,7 @@ input:
     argument_type: file.vcf_gz
     files:
       - pon-ugrp-somatic@202112.01 
-      
+
   # Parameter argument
   sample_name_tumor:
     argument_type: parameter.string
@@ -64,14 +64,6 @@ workflows:
       input_bam_normal:
         argument_type: file.bam
         input_dimension: 1
-      
-      tumorname:
-        argument_type: parameter.string
-        source_argument_name: sample_name_tumor
-      
-      normalname:
-        argument_type: parameter.string
-        source_argument_name: sample_name_normal
 
       reference_fa:
         argument_type: file.fa
@@ -83,6 +75,15 @@ workflows:
         argument_type: file.vcf_gz
         source_argument_name: panel_of_normals
 
+      # Parameter argument
+      tumorname:
+        argument_type: parameter.string
+        source_argument_name: sample_name_tumor
+
+      normalname:
+        argument_type: parameter.string
+        source_argument_name: sample_name_normal
+
     ## Output ##########################
     #     Output files for the workflow
     ####################################
@@ -92,7 +93,7 @@ workflows:
       output_vcf_gz:
         file_type: TNscope VCF
         description: output from Sentieon TNscope for tumor-normal paired samples in VCF format
-        variant_type: SNV #_INDEL_SV
+        variant_type: SNV #output VCF may contain INDEL and SV as well
 
     ## EC2 Configuration to use ########
     ####################################
