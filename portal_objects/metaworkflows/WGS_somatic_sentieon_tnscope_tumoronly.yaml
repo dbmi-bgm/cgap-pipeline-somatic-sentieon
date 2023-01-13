@@ -48,16 +48,18 @@ workflows:
         argument_type: file.bam
         source_argument_name: input_bams
         input_dimension: 1
-    
-      samplename:
-        argument_type: parameter.string
-        source_argument_name: sample_name_tumor
 
       reference_fa:
         argument_type: file.fa
       
       known-sites-snp:
         argument_type: file.vcf_gz
+
+      # Parameter argument
+        samplename:
+          argument_type: parameter.string
+          source_argument_name: sample_name_tumor
+
 
 
     ## Output ##########################
@@ -78,5 +80,5 @@ workflows:
       ebs_size: 1.5x
       EBS_optimized: True
       spot_instance: True
-      run_name: run_somatic_sentieon_tnscope
+      run_name: run_somatic_sentieon_tnscope_tumoronly
       behavior_on_capacity_limit: wait_and_retry
