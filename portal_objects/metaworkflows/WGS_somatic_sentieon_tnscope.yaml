@@ -2,7 +2,7 @@
 #     General information for the pipeline
 #############################################################
 name: WGS_somatic_sentieon_tnscope
-description: Run Tumor-Normal analysis using Sentieon TNscope for SVs, SNVs and INDELs detection.
+description: Run Tumor-Normal analysis using Sentieon TNscope for SNV, INDEL and SV detection.
 
 
 ## General arguments ########################################
