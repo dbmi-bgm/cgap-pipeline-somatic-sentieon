@@ -71,7 +71,6 @@ workflows:
       output_vcf_gz:
         file_type: TNscope VCF
         description: output from Sentieon TNscope for a tumor sample in VCF format
-        variant_type: SNV #output VCF may contain INDEL and SV as well 
 
     ## EC2 Configuration to use ########
     ####################################
