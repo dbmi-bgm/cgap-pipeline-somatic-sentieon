@@ -33,7 +33,7 @@ input:
   panel_of_normals:
     argument_type: file.vcf_gz
     files:
-      - pon-ugrp-somatic@202112.01 
+      - pon-ugrp-somatic@202112.01
 
   # Parameter argument
   sample_name_tumor:
