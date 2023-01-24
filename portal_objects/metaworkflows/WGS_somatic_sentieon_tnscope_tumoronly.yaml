@@ -60,8 +60,6 @@ workflows:
         argument_type: parameter.string
         source_argument_name: sample_name_tumor
 
-
-
     ## Output ##############################
     #     Output files for the workflow
     ########################################

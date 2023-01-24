@@ -4,7 +4,6 @@
 name: WGS_somatic_sentieon_tnscope
 description: Run Tumor-Normal analysis using Sentieon TNscope for SNV, INDEL and SV detection.
 
-
 ## General arguments ########################################
 #     Pipeline input, reference files, and general arguments
 #       define all arguments for the pipeline here
