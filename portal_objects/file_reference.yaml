@@ -22,7 +22,7 @@ accession: GAPFI4LJRN98
 # Panel of normals for UGRP, hg38/GRCh38
 ################################################################
 name: pon-ugrp-somatic
-description: Panel of normals for datasets from UGRP families . |
+description: Panel of normals for datasets from UGRP families. |
              Build hg38/GRCh38.
 format: vcf_gz
 version: "202112.01"
