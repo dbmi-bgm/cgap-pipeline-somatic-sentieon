@@ -1,0 +1,33 @@
+#***************************************************************
+# ANNOTATION SOURCE
+#***************************************************************
+################################################################
+# dbSNP build 151, hg38/GRCh38
+#   Common variants only
+################################################################
+name: dbsnp-common
+description: Common variants from dbSNP build 151. |
+             Build hg38/GRCh38.
+format: vcf_gz
+version: "151"
+secondary_files:
+  - vcf_gz_tbi
+# Required to enable sync with a reference bucket
+uuid: 8ed35691-0af4-467a-adbc-81eb088549f0
+accession: GAPFI4LJRN98
+
+---
+
+################################################################
+# Panel of normals for UGRP, hg38/GRCh38
+################################################################
+name: pon-ugrp-somatic
+description: Panel of normals for datasets from UGRP families. |
+             Build hg38/GRCh38.
+format: vcf_gz
+version: "202112.01"
+secondary_files:
+  - vcf_gz_tbi
+# Required to enable sync with a reference bucket
+uuid: 833c91e9-a8cd-470e-8100-32b49ed14159
+accession: GAPFIV1QKYU9

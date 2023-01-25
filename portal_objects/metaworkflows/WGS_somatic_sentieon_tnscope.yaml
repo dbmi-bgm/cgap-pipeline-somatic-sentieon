@@ -1,0 +1,104 @@
+## Pipeline information #####################################
+#     General information for the pipeline
+#############################################################
+name: WGS_somatic_sentieon_tnscope
+description: Run Tumor-Normal analysis using Sentieon TNscope for SNV, INDEL and SV detection.
+
+## General arguments ########################################
+#     Pipeline input, reference files, and general arguments
+#       define all arguments for the pipeline here
+#############################################################
+input:
+
+  # File argument
+  input_bam_tumor:
+    argument_type: file.bam
+    dimensionality: 1
+  
+  input_bam_normal:
+    argument_type: file.bam
+    dimensionality: 1
+  
+  reference_fa:
+    argument_type: file.fa
+    files:
+      - complete-reference-fasta@hg38
+  
+  known-sites-snp:
+    argument_type: file.vcf_gz
+    files:
+      - dbsnp-common@151
+  
+  panel_of_normals:
+    argument_type: file.vcf_gz
+    files:
+      - pon-ugrp-somatic@202112.01
+
+  # Parameter argument
+  sample_name_tumor:
+    argument_type: parameter.string
+  
+  sample_name_normal:
+    argument_type: parameter.string
+
+## Workflows and dependencies ###############################
+#     Information for the workflows and their dependencies
+#############################################################
+workflows:
+
+  ## Workflow definition #####################
+  #  somatic_sentieon_tnscope
+  ############################################
+  somatic_sentieon_tnscope:
+
+    ## Specific arguments ##############
+    ####################################
+    input:
+
+      # File argument
+      input_bam_tumor:
+        argument_type: file.bam
+        input_dimension: 1
+      
+      input_bam_normal:
+        argument_type: file.bam
+        input_dimension: 1
+
+      reference_fa:
+        argument_type: file.fa
+      
+      known-sites-snp:
+        argument_type: file.vcf_gz
+      
+      pon:
+        argument_type: file.vcf_gz
+        source_argument_name: panel_of_normals
+
+      # Parameter argument
+      tumorname:
+        argument_type: parameter.string
+        source_argument_name: sample_name_tumor
+
+      normalname:
+        argument_type: parameter.string
+        source_argument_name: sample_name_normal
+
+    ## Output ##########################
+    #     Output files for the workflow
+    ####################################
+    output:
+
+      # File output
+      output_vcf_gz:
+        file_type: TNscope VCF
+        description: output from Sentieon TNscope for tumor-normal paired samples in VCF format
+
+    ## EC2 Configuration to use ########
+    ####################################
+    config:
+      instance_type: c5n.9xlarge
+      ebs_size: 1.5x
+      EBS_optimized: True
+      spot_instance: True
+      run_name: run_somatic_sentieon_tnscope
+      behavior_on_capacity_limit: wait_and_retry
