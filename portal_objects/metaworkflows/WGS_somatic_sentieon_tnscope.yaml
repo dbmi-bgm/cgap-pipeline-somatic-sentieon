@@ -14,21 +14,21 @@ input:
   input_bam_tumor:
     argument_type: file.bam
     dimensionality: 1
-  
+
   input_bam_normal:
     argument_type: file.bam
     dimensionality: 1
-  
+
   reference_fa:
     argument_type: file.fa
     files:
       - complete-reference-fasta@hg38
-  
+
   known-sites-snp:
     argument_type: file.vcf_gz
     files:
       - dbsnp-common@151
-  
+
   panel_of_normals:
     argument_type: file.vcf_gz
     files:
@@ -37,7 +37,7 @@ input:
   # Parameter argument
   sample_name_tumor:
     argument_type: parameter.string
-  
+
   sample_name_normal:
     argument_type: parameter.string
 
@@ -59,17 +59,17 @@ workflows:
       input_bam_tumor:
         argument_type: file.bam
         input_dimension: 1
-      
+
       input_bam_normal:
         argument_type: file.bam
         input_dimension: 1
 
       reference_fa:
         argument_type: file.fa
-      
+
       known-sites-snp:
         argument_type: file.vcf_gz
-      
+
       pon:
         argument_type: file.vcf_gz
         source_argument_name: panel_of_normals

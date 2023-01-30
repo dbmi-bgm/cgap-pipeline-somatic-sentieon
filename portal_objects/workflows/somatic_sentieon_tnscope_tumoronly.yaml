@@ -5,11 +5,11 @@ name: somatic_sentieon_tnscope_tumoronly
 description: Run Sentieon TNscope for somatic analysis on a tumor sample.
 
 runner:
-    language: cwl
-    main: sentieon_somatic_tumor_only.cwl
+  language: cwl
+  main: sentieon_somatic_tumor_only.cwl
 
 software:
-    - Sentieon@202112.01
+  - Sentieon@202112.01
 
 ## Input information ########################################
 #     Input files and parameters
@@ -19,7 +19,7 @@ input:
   # File argument
   input_bam:
     argument_type: file.bam
-  
+
   reference_fa:
     argument_type: file.fa
 

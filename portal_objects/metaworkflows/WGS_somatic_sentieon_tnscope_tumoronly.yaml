@@ -19,7 +19,7 @@ input:
     argument_type: file.fa
     files:
       - complete-reference-fasta@hg38
-  
+
   known-sites-snp:
     argument_type: file.vcf_gz
     files:
@@ -39,8 +39,8 @@ workflows:
   ############################################
   somatic_sentieon_tnscope_tumoronly:
 
-  ## Specific arguments ##############
-  ####################################
+    ## Specific arguments ##############
+    ####################################
     input:
 
       # File argument
@@ -51,7 +51,7 @@ workflows:
 
       reference_fa:
         argument_type: file.fa
-      
+
       known-sites-snp:
         argument_type: file.vcf_gz
 

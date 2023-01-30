@@ -25,10 +25,10 @@ input:
 
   pon:
     argument_type: file.vcf_gz
-  
+
   reference_fa:
     argument_type: file.fa
-  
+
   known-sites-snp:
     argument_type: file.vcf_gz
 
