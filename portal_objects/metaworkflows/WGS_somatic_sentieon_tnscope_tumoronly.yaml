@@ -74,7 +74,7 @@ workflows:
     ####################################
     config:
       instance_type: c5n.9xlarge
-      ebs_size: 1.5x
+      ebs_size: "1.5x"
       EBS_optimized: True
       spot_instance: True
       run_name: run_somatic_sentieon_tnscope_tumoronly
