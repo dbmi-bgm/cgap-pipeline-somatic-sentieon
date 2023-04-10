@@ -38,9 +38,9 @@ samtools view -H $normal_bam | grep "@RG" | awk '{print $2}' | awk 'BEGIN { FS =
 
 if [ $(grep -f tumor_read_groups.txt normal_read_groups.txt | wc -l) -gt 0 ]
 then
-  declare -i n=0; for i in $(cat tumor_read_groups.txt); do n+=1; tumor_replace+=" --replace_rg ${i}=ID:T_${n}\tSM:TUMOR\tPL:PLATFORM"; done
-  declare -i n=0; for i in $(cat normal_read_groups.txt); do n+=1; normal_replace+=" --replace_rg ${i}=ID:N_${n}\tSM:NORMAL\tPL:PLATFORM"; done
-  command="sentieon driver -t ${nt} -r ${reference_fa} ${tumor_replace} -i ${tumor_bam} ${normal_replace} -i ${normal_bam} --algo TNscope --tumor_sample TUMOR --normal_sample NORMAL --dbsnp ${dbsnp} --pon ${pon} output.vcf"
+  declare -i n=0; for i in $(cat tumor_read_groups.txt); do n+=1; tumor_replace+=" --replace_rg ${i}=ID:T_${n}\tSM:${tumor_name}\tPL:PLATFORM"; done
+  declare -i n=0; for i in $(cat normal_read_groups.txt); do n+=1; normal_replace+=" --replace_rg ${i}=ID:N_${n}\tSM:${normal_name}\tPL:PLATFORM"; done
+  command="sentieon driver -t ${nt} -r ${reference_fa} ${tumor_replace} -i ${tumor_bam} ${normal_replace} -i ${normal_bam} --algo TNscope --tumor_sample ${tumor_name} --normal_sample ${normal_name} --dbsnp ${dbsnp} --pon ${pon} output.vcf"
   echo $command
 else
   command="sentieon driver -t ${nt} -r ${reference_fa} -i ${tumor_bam} -i ${normal_bam} --algo TNscope --tumor_sample ${tumor_name} --normal_sample ${normal_name} --dbsnp ${dbsnp} --pon ${pon} output.vcf"
