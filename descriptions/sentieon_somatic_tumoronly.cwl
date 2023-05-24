@@ -28,7 +28,7 @@ inputs:
       - .bai
     doc: input bam file, must have read groups
 
-  - id: samplename
+  - id: tumor_sample_name
     type: string
     inputBinding:
       position: 2

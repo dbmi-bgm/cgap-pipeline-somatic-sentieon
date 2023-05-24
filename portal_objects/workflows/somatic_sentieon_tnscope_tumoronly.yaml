@@ -27,7 +27,7 @@ input:
     argument_type: file.vcf_gz
 
   # Parameter argument
-  samplename:
+  tumor_sample_name:
     argument_type: parameter.string
 
 ## Output information #######################################
