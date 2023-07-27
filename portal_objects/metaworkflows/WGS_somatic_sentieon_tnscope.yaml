@@ -11,11 +11,11 @@ description: Run Tumor-Normal analysis using Sentieon TNscope for SNV, INDEL and
 input:
 
   # File argument
-  input_bam_tumor:
+  input_tumor_bam:
     argument_type: file.bam
     dimensionality: 1
 
-  input_bam_normal:
+  input_normal_bam:
     argument_type: file.bam
     dimensionality: 1
 
@@ -35,10 +35,10 @@ input:
       - pon-ugrp-somatic@202112.01
 
   # Parameter argument
-  sample_name_tumor:
+  tumor_sample_name:
     argument_type: parameter.string
 
-  sample_name_normal:
+  normal_sample_name:
     argument_type: parameter.string
 
 ## Workflows and dependencies ###############################
@@ -56,11 +56,11 @@ workflows:
     input:
 
       # File argument
-      input_bam_tumor:
+      input_tumor_bam:
         argument_type: file.bam
         input_dimension: 1
 
-      input_bam_normal:
+      input_normal_bam:
         argument_type: file.bam
         input_dimension: 1
 
@@ -75,13 +75,13 @@ workflows:
         source_argument_name: panel_of_normals
 
       # Parameter argument
-      tumorname:
+      tumor_sample_name:
         argument_type: parameter.string
-        source_argument_name: sample_name_tumor
+        source_argument_name: tumor_sample_name
 
-      normalname:
+      normal_sample_name:
         argument_type: parameter.string
-        source_argument_name: sample_name_normal
+        source_argument_name: normal_sample_name
 
     ## Output ##########################
     #     Output files for the workflow

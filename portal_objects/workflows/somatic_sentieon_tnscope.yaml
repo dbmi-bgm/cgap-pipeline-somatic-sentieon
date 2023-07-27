@@ -17,10 +17,10 @@ software:
 input:
 
   # File argument
-  input_bam_tumor:
+  input_tumor_bam:
     argument_type: file.bam
 
-  input_bam_normal:
+  input_normal_bam:
     argument_type: file.bam
 
   pon:
@@ -33,10 +33,10 @@ input:
     argument_type: file.vcf_gz
 
   # Parameter argument
-  tumorname:
+  tumor_sample_name:
     argument_type: parameter.string
 
-  normalname:
+  normal_sample_name:
     argument_type: parameter.string
 
 ## Output information #######################################

@@ -20,7 +20,7 @@ hints:
 baseCommand: [somatic_sentieon_tumor_normal.sh]
 
 inputs:
-  - id: input_bam_tumor
+  - id: input_tumor_bam
     type: File
     inputBinding:
       position: 1
@@ -28,13 +28,13 @@ inputs:
       - .bai
     doc: input bam file, must have read groups
 
-  - id: tumorname
+  - id: tumor_sample_name
     type: string
     inputBinding:
       position: 2
     doc: expect string for sample name from tumor bam
 
-  - id: input_bam_normal
+  - id: input_normal_bam
     type: File
     inputBinding:
       position: 3
@@ -42,7 +42,7 @@ inputs:
       - .bai
     doc: input bam file, must have read groups
 
-  - id: normalname
+  - id: normal_sample_name
     type: string
     inputBinding:
       position: 4

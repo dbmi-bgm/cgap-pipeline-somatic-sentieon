@@ -26,7 +26,7 @@ input:
       - dbsnp-common@151
 
   # Parameter argument
-  sample_name_tumor:
+  tumor_sample_name:
     argument_type: parameter.string
 
 ## Workflows and dependencies ###############################
@@ -56,9 +56,8 @@ workflows:
         argument_type: file.vcf_gz
 
       # Parameter argument
-      samplename:
+      tumor_sample_name:
         argument_type: parameter.string
-        source_argument_name: sample_name_tumor
 
     ## Output ##############################
     #     Output files for the workflow
